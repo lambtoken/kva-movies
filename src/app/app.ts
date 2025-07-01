@@ -1,13 +1,55 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { 
+  trigger, 
+  transition, 
+  style, 
+  animate, 
+  query, 
+  group,
+  sequence
+} from '@angular/animations';
 import { Navbar } from './navbar/navbar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar],
+  standalone: true,
+  imports: [CommonModule, RouterModule, Navbar],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styles: [`
+    .router-container {
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+    router-outlet {
+      display: contents;
+    }
+  `],
+  animations: [
+    trigger('fadeAnimation', [
+      transition('* => *', [
+        group([
+          // Exit animation
+          query(':leave', [
+            style({ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }),
+            animate('1000ms ease-in-out', style({ opacity: 0 }))
+          ], { optional: true }),
+          
+          // Enter animation with delay
+          query(':enter', [
+            style({ opacity: 0, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }),
+            animate('1000ms 300ms ease-in-out', style({ opacity: 1 }))
+          ], { optional: true })
+        ])
+      ])
+    ])
+  ]
 })
 export class App {
-  protected title = 'kva-movies';
+  getOutletState(outlet: RouterOutlet) {
+    return outlet?.activatedRouteData?.['animation'];
+  }
 }

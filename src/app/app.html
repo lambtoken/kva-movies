@@ -1,2 +1,6 @@
-<Navbar />
-<router-outlet />
+<main>
+  <Navbar />
+  <div class="router-container" [@fadeAnimation]="getOutletState(outlet)">
+    <router-outlet #outlet="outlet"></router-outlet>
+  </div>
+</main>
