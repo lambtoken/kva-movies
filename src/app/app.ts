@@ -12,6 +12,7 @@ import {
   sequence
 } from '@angular/animations';
 import { Navbar } from './navbar/navbar';
+import { PseudoServer } from './pseudo-server';
 
 @Component({
   selector: 'app-root',
@@ -48,7 +49,14 @@ import { Navbar } from './navbar/navbar';
     ])
   ]
 })
+
+
 export class App {
+  constructor() {
+    let server = new PseudoServer();
+    server.getAllMovies().then(movies => console.log('Movies fetched:', movies));
+    // You can initialize any services or data here if needed
+  }
   getOutletState(outlet: RouterOutlet) {
     return outlet?.activatedRouteData?.['animation'];
   }
