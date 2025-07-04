@@ -23,7 +23,8 @@ import { PseudoServer } from './pseudo-server';
     .router-container {
       position: relative;
       height: 100%;
-      width: 100%;
+      width: 1000px;
+      margin: 0 auto;
     }
     router-outlet {
       display: contents;
@@ -53,8 +54,8 @@ import { PseudoServer } from './pseudo-server';
 
 export class App {
   constructor() {
-    let server = new PseudoServer();
-    server.getAllMovies().then(movies => console.log('Movies fetched:', movies));
+    // let server = new PseudoServer();
+    // server.getAllMovies().then(movies => console.log('Movies fetched:', movies));
     // You can initialize any services or data here if needed
   }
   getOutletState(outlet: RouterOutlet) {

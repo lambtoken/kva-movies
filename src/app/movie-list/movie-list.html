@@ -1,0 +1,7 @@
+<div class="movie-list">
+
+@for (movie of movies; track movie.id) {
+    <MovieCard [movie]="movie"></MovieCard>
+} 
+
+</div>

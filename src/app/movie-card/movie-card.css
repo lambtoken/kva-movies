@@ -1,0 +1,9 @@
+.movie-card {
+    height: 300px;
+    text-align: center;
+}
+
+.movie-card mat-card-title {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
