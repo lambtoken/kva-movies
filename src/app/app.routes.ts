@@ -7,7 +7,7 @@ export const routes: Routes = [
   { 
     path: 'home', 
     component: HomePage, 
-    data: { animation: 'HomePage' }  // Simple identifier
+    data: { animation: 'HomePage' }
   },
   { 
     path: 'about', 

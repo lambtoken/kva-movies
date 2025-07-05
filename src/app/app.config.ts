@@ -6,6 +6,6 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideAnimations() // ← THIS IS CRUCIAL
+    provideAnimations()
   ]
 };

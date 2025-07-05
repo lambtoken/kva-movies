@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Movie } from '../models/movie';
+import { Screening, ScreeningStatus } from '../models/screening';
+
 import axios from 'axios';
 
 @Injectable({
@@ -9,21 +11,50 @@ import axios from 'axios';
 export class PseudoServer {
 
   private baseUrl: string = 'https://movie.pequla.com/api'
+  private screenings: Screening[] = [];
 
   constructor() { }
 
-  public registerUser(username: string, password: string): Boolean {
-    if (localStorage.getItem(username)) {
-      return false;
+  public registerUser(
+    firstName: string, 
+    lastName: string, 
+    email: string, 
+    password: string,
+    phone: string,
+    address: string
+  ): Boolean {
+    if (!localStorage.getItem("kva-movies")) {
+      localStorage.setItem("kva-movies", JSON.stringify({users: []}))
     }
 
-    const user: User = {
-      username,
-      password,
-      movies: []
+    let storageStr = localStorage.getItem("kva-movies");
+    
+    if (!storageStr) {
+      console.error("Obtaining storage failed!")
+      return false
     }
 
-    localStorage.setItem(username, JSON.stringify(user));
+    let storage: { users: User[] } = JSON.parse(storageStr);
+
+    if (storage.users.find((u: User) => u.email === email)) {
+      console.warn("User with that name exists")
+      return false
+    }
+
+    const newUser: User = {
+      firstName: firstName,
+      lastName: lastName,
+      password: password,
+      email: email,
+      phone: phone,
+      address: address,
+      reservations: [],
+      favoriteGenres: []
+    }
+
+    storage.users.push(newUser);
+
+    localStorage.setItem("kva-movies", JSON.stringify(storage));
     return true;
 }
 
@@ -40,21 +71,87 @@ export class PseudoServer {
     }
   }
 
-  public getUser(username: string): User | null {
-    const user = localStorage.getItem(username);
-    if (user) {
-      return JSON.parse(user);
+  public getUser(email: string): User | null {
+    let storageStr = localStorage.getItem("kva-movies");
+
+    if (!storageStr) {
+      return null
     }
-    return null;
+
+    let storage: { users: User[] } = JSON.parse(storageStr);
+
+    const filter = storage.users.find((u: User) => u.email === email)
+
+    return filter || null
   }
 
   public async getAllMovies() {
     try {
       const response = await axios.get(`${this.baseUrl}/movie`);
-      return response.data as Movie[];
+      const movies = [] as Movie[]
+      
+      for (let i = 1; i < response.data.length; i++) {
+        const movieData = response.data[i]
+
+        let genres = []
+
+        for (let i = 1; i < movieData.genre; i++) {
+          genres.push(movieData.genre[i].genre.name)
+        }
+
+        let actors = []
+
+        for (let i = 1; i < movieData.movieActors; i++) {
+          actors.push(movieData.movieActors[i].actor.name)
+        }
+
+        const movie: Movie = {
+          id: "123",
+          title: movieData.title,
+          description: movieData.description,
+          releaseDate: movieData.startDate,
+          genres: genres,
+          director: movieData.director.name,
+          actors: actors,
+          imageUrl: movieData.poster,
+        }
+
+        movies.push(movie)
+      }
+
+      return movies
     } catch (error) {
       console.error('Error fetching movies:', error);
       return [];
     }
+  }
+
+  public generateRandomScreenings(movies: Movie[], count: number) :Screening[] {
+    const screenings = [];
+    const now = new Date();
+    for (let i = 0; i < count; i++) {
+      const randomMovie = movies[Math.floor(Math.random() * movies.length)];
+      const randomDate = new Date(now.getTime() + Math.random() * 10000000000);
+      const randomSeatCount = Math.random() > 0 && 100 || 150
+      const randomPrice = Math.floor(Math.random() * 1200) + 1000
+      
+      const screening: Screening = new Screening(randomMovie.id, randomDate, randomSeatCount, randomPrice)
+
+      screenings.push(screening);
+
+    }
+    return screenings;
+  }
+
+  public getScreeningsByMovie(movies: Movie[], screenings: Screening[]) {
+    return movies.map(movie => ({
+      movie,
+      screenings: screenings.filter(s => s.movieId === movie.id)
+    }));
+  }
+
+  public async setup() {
+    const movies = await this.getAllMovies();   
+    this.screenings = this.generateRandomScreenings(movies, 10)
   }
 }

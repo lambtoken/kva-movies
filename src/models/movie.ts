@@ -1,10 +1,20 @@
-export type Movie = {
+export enum Genre {
+  Action,
+  Comedy,
+  Drama,
+  Horror,
+  SciFi,
+  Romance, 
+  Thriller
+}
+
+export interface Movie {
   id: string;
   title: string;
   description: string;
   releaseDate: Date;
-  genre: string;
+  genres: string[];
   director: string;
   actors: string[];
-  rating: number;
+  imageUrl: string;
 }

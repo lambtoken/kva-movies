@@ -15,6 +15,6 @@ nav {
     font-size: 24px;
     font-weight: bold;
     padding: 0 20px;
-    color: #ffffff;
-    background-color: #FF9F00;
+    color: var(--white);
+    background-color: var(--blue);
 }

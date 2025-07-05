@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MovieCard } from '../movie-card/movie-card';
+import { PseudoServer } from '../pseudo-server';
+import { Movie } from '../../models/movie';
 
 @Component({
   selector: 'MovieList',
   imports: [MovieCard],
   templateUrl: './movie-list.html',
-  styleUrl: './movie-list.css'
+  styleUrls: ['./movie-list.css']
 })
-export class MovieList {
-  movies = [
-    { id: 1, title: 'Inception', year: 2010 },
-    { id: 2, title: 'Interstellar', year: 2014 },
-    { id: 3, title: 'The Dark Knight', year: 2008 }
-  ];
+export class MovieList implements OnInit {
 
-  constructor() {
-    // You can fetch movies from a service or API here
+  public movies: Movie[] = [];
+
+  constructor(private server: PseudoServer) {}
+
+  async ngOnInit() {
+    this.movies = await this.server.getAllMovies();
   }
 }
