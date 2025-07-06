@@ -1,0 +1,51 @@
+@if (isLogin) {
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <label>Email:
+        <input type="email" formControlName="email" />
+    </label>
+    @if (loginForm.controls.email.invalid && (loginForm.controls.email.dirty || loginForm.controls.email.touched)) {
+        <div>Email is invalid</div>
+    }
+
+    <label>Password:
+        <input type="password" formControlName="password" />
+    </label>
+    @if (loginForm.controls.password.invalid && (loginForm.controls.password.dirty || loginForm.controls.password.touched)) {
+        <div>Password is invalid</div>
+    }
+
+    <button mat-button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+
+    <button (click)="isLogin = false" type="button">No account? Register</button>
+} @else {
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <label>Email:
+        <input type="email" formControlName="email" />
+    </label>
+    @if (registerForm.controls.email.invalid && (registerForm.controls.email.dirty || registerForm.controls.email.touched)) {
+        <div>Email is invalid</div>
+    }
+
+    <label>Password:
+        <input type="password" formControlName="password" />
+    </label>
+    @if (registerForm.controls.password.invalid && (registerForm.controls.password.dirty || registerForm.controls.password.touched)) {
+        <div>Password is invalid</div>
+    }
+
+    <label>Confirm Password:
+        <input type="password" formControlName="confirmPassword" />
+    </label>
+    @if (registerForm.controls.confirmPassword.invalid && (registerForm.controls.confirmPassword.dirty || registerForm.controls.confirmPassword.touched)) {
+        <div>Confirm Password is required</div>
+    }
+    @if (registerForm.errors?.['passwordMismatch']) {
+        <div>Passwords do not match</div>
+    }
+
+    <button mat-button type="submit" [disabled]="registerForm.invalid">Register</button>
+    </form>
+
+    <button (click)="isLogin = true" type="button">Already have an account? Login</button>
+}

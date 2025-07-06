@@ -1,0 +1,24 @@
+.image-container {
+    position: fixed;
+    display: inline-block;
+    left: 0;
+    top: 0;
+    z-index:-100;
+}
+
+.image-container img {
+    display: block;
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    object-position: center;
+    filter: grayscale(100%) brightness(0.8);
+}
+
+.color-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--gray);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}

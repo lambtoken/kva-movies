@@ -36,13 +36,13 @@ import { PseudoServer } from './pseudo-server';
         group([
           // Exit animation
           query(':leave', [
-            style({ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }),
-            animate('1000ms ease-in-out', style({ opacity: 0 }))
+          style({ opacity: 0 }),            
+          animate('1000ms ease-in-out', style({ opacity: 0 }))
           ], { optional: true }),
           
           // Enter animation with delay
           query(':enter', [
-            style({ opacity: 0, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }),
+            style({ opacity: 0 }),
             animate('1000ms 300ms ease-in-out', style({ opacity: 1 }))
           ], { optional: true })
         ])

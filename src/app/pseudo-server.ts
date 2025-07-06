@@ -8,6 +8,7 @@ import axios from 'axios';
 @Injectable({
   providedIn: 'root'
 })
+
 export class PseudoServer {
 
   private baseUrl: string = 'https://movie.pequla.com/api'

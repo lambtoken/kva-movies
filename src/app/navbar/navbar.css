@@ -1,18 +1,12 @@
-/*
-Color: 
-#309898
-#FF9F00
-#F4631E
-#CB0404
-*/
-
 nav {
     height: 100px;
     width: 100%;
+    position: relative;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 24px;
+    font-size: 40px;
     font-weight: bold;
     padding: 0 20px;
     color: var(--white);
