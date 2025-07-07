@@ -66,6 +66,7 @@ export class PseudoServer {
     }
 
     if (user.password === password) {
+      localStorage.setItem("session", username)
       return true;
     } else {
       return false;
@@ -96,14 +97,22 @@ export class PseudoServer {
 
         let genres = []
 
-        for (let i = 1; i < movieData.genre; i++) {
-          genres.push(movieData.genre[i].genre.name)
+        for (let i = 1; i < movieData.movieGenres.length; i++) {
+          genres.push(movieData.movieGenres[i].genre.name)
+        }
+
+        if (genres.length == 0) {
+          genres.push("Nepoznat")
         }
 
         let actors = []
 
-        for (let i = 1; i < movieData.movieActors; i++) {
+        for (let i = 1; i < movieData.movieActors.length; i++) {
           actors.push(movieData.movieActors[i].actor.name)
+        }
+
+        if (actors.length == 0) {
+          actors.push("Nema podataka")
         }
 
         const movie: Movie = {
@@ -154,5 +163,13 @@ export class PseudoServer {
   public async setup() {
     const movies = await this.getAllMovies();   
     this.screenings = this.generateRandomScreenings(movies, 10)
+  }
+
+  public activeSession(): string | null {
+    const session = localStorage.getItem("session")
+    
+    if (!session) return null
+    
+    return session
   }
 }

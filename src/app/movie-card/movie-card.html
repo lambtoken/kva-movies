@@ -1,10 +1,18 @@
-<mat-card class="movie-card">
-    <mat-card-title>{{movie.title}}</mat-card-title>
-
-    <img mat-card-image src="{{movie.imageUrl}}" alt="Movie poster">
+<div class="container">
+    <mat-card class="movie-card">
+        <img mat-card-image src="{{movie.imageUrl}}" alt="Movie poster">
+        <div class="details">
+            <div class="details-content">
+                <p>Zanr: {{movie.genres[0]}}</p>
+                <p>Reziser: {{movie.director}}</p>
+                <p class="details-actors">Glumci: {{movie.actors}}</p>
+            </div>
+        </div>
+    </mat-card>
     
+    <mat-card-title>{{movie.title}}</mat-card-title>
     <mat-card-actions>
-        <button mat-button color="primary">Kupi kartu</button>
+        <button mat-button>Kupi kartu</button>
         <button mat-button>Detalji</button>
     </mat-card-actions>
-</mat-card>
+</div>

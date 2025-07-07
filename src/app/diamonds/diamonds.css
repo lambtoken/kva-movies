@@ -1,0 +1,19 @@
+.diamond {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(45deg);
+  animation: float 8s linear infinite;
+}
+
+@keyframes float {
+  from {
+    transform: rotate(45deg) translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(45deg) translateY(-50px);
+    opacity: 0;
+  }
+}
