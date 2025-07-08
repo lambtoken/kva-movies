@@ -13,11 +13,12 @@ import {
 } from '@angular/animations';
 import { Navbar } from './navbar/navbar';
 import { PseudoServer } from './pseudo-server';
+import { Diamonds } from './diamonds/diamonds';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, Navbar],
+  imports: [CommonModule, RouterModule, Navbar, Diamonds],
   templateUrl: './app.html',
   styles: [`
     .router-container {

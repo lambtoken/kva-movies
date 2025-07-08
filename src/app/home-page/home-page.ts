@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { MovieList } from '../movie-list/movie-list';
-import { Diamonds } from '../diamonds/diamonds';
 
 @Component({
   selector: 'HomePage',
-  imports: [MovieList, Diamonds],
+  imports: [MovieList],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css'
 })

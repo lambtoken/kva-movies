@@ -5,7 +5,8 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractContro
   selector: 'LoginRegister',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './login-register.html'
+  templateUrl: './login-register.html',
+  styleUrl: './login-register.css'
 })
 export class LoginRegister {
 isLogin = true;
