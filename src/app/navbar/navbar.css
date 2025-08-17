@@ -13,3 +13,30 @@ nav {
     color: var(--white);
     background-color: var(--blue);
 }
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 18px;
+}
+
+.welcome {
+    color: #ffd700;
+    font-weight: 500;
+}
+
+.logout-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.logout-btn:hover {
+    background: #c82333;
+}

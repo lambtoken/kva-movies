@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Movie } from '../models/movie';
 import { Screening, ScreeningStatus } from '../models/screening';
+import { RandomMovieGenerator } from './random-movie-generator';
 
 import axios from 'axios';
 
@@ -14,7 +15,7 @@ export class PseudoServer {
   private baseUrl: string = 'https://movie.pequla.com/api'
   private screenings: Screening[] = [];
 
-  constructor() { }
+  constructor(private randomMovieGenerator: RandomMovieGenerator) { }
 
   public registerUser(
     firstName: string, 
@@ -38,7 +39,7 @@ export class PseudoServer {
     let storage: { users: User[] } = JSON.parse(storageStr);
 
     if (storage.users.find((u: User) => u.email === email)) {
-      console.warn("User with that name exists")
+      console.warn("User with that email already exists")
       return false
     }
 
@@ -56,6 +57,9 @@ export class PseudoServer {
     storage.users.push(newUser);
 
     localStorage.setItem("kva-movies", JSON.stringify(storage));
+    
+    console.log('Auto-login after registration for:', email); // Debug log
+    this.loginUser(email, password);
     return true;
 }
 
@@ -131,8 +135,8 @@ export class PseudoServer {
 
       return movies
     } catch (error) {
-      console.error('Error fetching movies:', error);
-      return [];
+      console.error('Error fetching movies from API, using random movies as fallback:', error);
+      return this.randomMovieGenerator.generateRandomMovies(25);
     }
   }
 
@@ -165,11 +169,30 @@ export class PseudoServer {
     this.screenings = this.generateRandomScreenings(movies, 10)
   }
 
+  public generateRandomMoviesForTesting(count: number = 25): Movie[] {
+    return this.randomMovieGenerator.generateRandomMovies(count);
+  }
+
   public activeSession(): string | null {
     const session = localStorage.getItem("session")
     
     if (!session) return null
     
     return session
+  }
+
+  public getCurrentUser(): User | null {
+    const sessionEmail = this.activeSession();
+    if (!sessionEmail) return null;
+    
+    return this.getUser(sessionEmail);
+  }
+
+  public isAuthenticated(): boolean {
+    return this.activeSession() !== null;
+  }
+
+  public logout(): void {
+    localStorage.removeItem("session");
   }
 }

@@ -1,7 +1,11 @@
 <div class="movie-list">
-
-@for (movie of movies; track movie.id) {
-    <MovieCard [movie]="movie"></MovieCard>
-} 
-
+    @if (isUsingFallbackData) {
+        <div class="fallback-notice">
+            <p>⚠️ API je trenutno nedostupan. Prikazani random generisani filmovi.</p>
+        </div>
+    }
+    
+    @for (movie of movies; track movie.id) {
+        <MovieCard [movie]="movie"></MovieCard>
+    } 
 </div>

@@ -1,51 +1,77 @@
 @if (isLogin) {
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <label>Email:
-        <input type="email" formControlName="email" />
-    </label>
-    @if (loginForm.controls.email.invalid && (loginForm.controls.email.dirty || loginForm.controls.email.touched)) {
-        <div>Email is invalid</div>
-    }
+        <h2>Prijava</h2>
+        
+        <label>Email:
+            <input type="email" formControlName="email" />
+        </label>
+        @if (loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)) {
+            <div class="error">Email nije validan</div>
+        }
 
-    <label>Password:
-        <input type="password" formControlName="password" />
-    </label>
-    @if (loginForm.controls.password.invalid && (loginForm.controls.password.dirty || loginForm.controls.password.touched)) {
-        <div>Password is invalid</div>
-    }
+        <label>Password:
+            <input type="password" formControlName="password" />
+        </label>
+        @if (loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)) {
+            <div class="error">Sifra je potrebna</div>
+        }
 
-    <button mat-button type="submit" [disabled]="loginForm.invalid">Login</button>
+        <button type="submit" [disabled]="loginForm.invalid">Login</button>
     </form>
 
-    <button (click)="isLogin = false" type="button">No account? Register</button>
+    <button (click)="isLogin = false" type="button">Nemate nalog? Registrujte se</button>
 } @else {
     <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-    <label>Email:
-        <input type="email" formControlName="email" />
-    </label>
-    @if (registerForm.controls.email.invalid && (registerForm.controls.email.dirty || registerForm.controls.email.touched)) {
-        <div>Email is invalid</div>
-    }
+        <h2>Registracija</h2>
+        
+        <label>Ime:
+            <input type="text" formControlName="firstName" />
+        </label>
+        @if (registerForm.get('firstName')?.invalid && (registerForm.get('firstName')?.dirty || registerForm.get('firstName')?.touched)) {
+            <div class="error">Ime je obavezno</div>
+        }
 
-    <label>Password:
-        <input type="password" formControlName="password" />
-    </label>
-    @if (registerForm.controls.password.invalid && (registerForm.controls.password.dirty || registerForm.controls.password.touched)) {
-        <div>Password is invalid</div>
-    }
+        <label>Prezime:
+            <input type="text" formControlName="lastName" />
+        </label>
+        @if (registerForm.get('lastName')?.invalid && (registerForm.get('lastName')?.dirty || registerForm.get('lastName')?.touched)) {
+            <div class="error">Prezime je obavezno</div>
+        }
 
-    <label>Confirm Password:
-        <input type="password" formControlName="confirmPassword" />
-    </label>
-    @if (registerForm.controls.confirmPassword.invalid && (registerForm.controls.confirmPassword.dirty || registerForm.controls.confirmPassword.touched)) {
-        <div>Confirm Password is required</div>
-    }
-    @if (registerForm.errors?.['passwordMismatch']) {
-        <div>Passwords do not match</div>
-    }
+        <label>Email:
+            <input type="email" formControlName="email" />
+        </label>
+        @if (registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)) {
+            <div class="error">Email neispravan</div>
+        }
 
-    <button mat-button type="submit" [disabled]="registerForm.invalid">Register</button>
+        <label>Password:
+            <input type="password" formControlName="password" />
+        </label>
+        @if (registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)) {
+            <div class="error">Password je obavezan</div>
+        }
+
+        <label>Potvrda Password-a:
+            <input type="password" formControlName="confirmPassword" />
+        </label>
+        @if (registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)) {
+            <div class="error">Potvrda lozinke je potrebna</div>
+        }
+        @if (registerForm.errors?.['passwordMismatch']) {
+            <div class="error">Passwordi nisu isti</div>
+        }
+
+        <button type="submit" [disabled]="registerForm.invalid">Register</button>
     </form>
 
-    <button (click)="isLogin = true" type="button">Already have an account? Login</button>
+    <button (click)="isLogin = true" type="button">Vec imate nalog? Prijavite se.</button>
+}
+
+@if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+}
+
+@if (successMessage) {
+    <div class="success-message">{{ successMessage }}</div>
 }

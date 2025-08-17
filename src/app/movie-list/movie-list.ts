@@ -12,10 +12,20 @@ import { Movie } from '../../models/movie';
 export class MovieList implements OnInit {
 
   public movies: Movie[] = [];
+  public isUsingFallbackData = false;
 
   constructor(private server: PseudoServer) {}
 
   async ngOnInit() {
-    this.movies = await this.server.getAllMovies();
+    try {
+      this.movies = await this.server.getAllMovies();
+      if (this.movies.length > 0 && this.movies[0].imageUrl.includes('pinimg.com')) {
+        this.isUsingFallbackData = true;
+      }
+    } catch (error) {
+      console.error('Error loading movies:', error);
+      this.movies = [];
+    }
   }
+
 }

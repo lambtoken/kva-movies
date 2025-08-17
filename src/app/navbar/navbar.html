@@ -3,7 +3,15 @@
         kva filmovi
     </h1>
     <div id="links">
-        <NavbarLink name="Home" path="/home"></NavbarLink>
-        <NavbarLink name="About" path="/about"></NavbarLink>
+        @if (isAuthenticated()) {
+            <NavbarLink name="Home" path="/home"></NavbarLink>
+            <NavbarLink name="About" path="/about"></NavbarLink>
+            <div class="user-section">
+                <span class="welcome">Welcome, {{ currentUser?.firstName }}!</span>
+                <button (click)="logout()" class="logout-btn">Logout</button>
+            </div>
+        } @else {
+            <NavbarLink name="Login" path="/landing"></NavbarLink>
+        }
     </div>
 </nav>
