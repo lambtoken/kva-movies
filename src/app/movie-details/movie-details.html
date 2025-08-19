@@ -1,1 +1,163 @@
-<p>movie-details works!</p>
+<div class="movie-details-container">
+  <div class="movie-details-card">
+    
+    <div *ngIf="loading" class="loading">
+      <mat-card>
+        <mat-card-content>
+          <p>Učitavanje...</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div *ngIf="error && !loading" class="error">
+      <mat-card>
+        <mat-card-content>
+          <h2>Error</h2>
+          <p>{{ error }}</p>
+          <button mat-raised-button color="primary" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+            Nazad
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div *ngIf="movie && !loading && !error" class="movie-content">
+      
+      <!-- Header with Back Button -->
+      <div class="header-actions">
+        <button mat-icon-button (click)="goBack()" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h1>
+          O filmu
+        </h1>
+      </div>
+
+      <div class="movie-info">
+        
+        <div class="poster-section">
+          <div class="poster-container">
+            <img [src]="movie.imageUrl" [alt]="movie.title" class="movie-poster">
+            
+            <div class="user-rating-overlay" *ngIf="userRating">
+              <div class="user-rating-badge">
+                <span class="rating-icon">⭐</span>
+                <span class="rating-text">Tvoja ocena: {{ userRating }}/5</span>W
+              </div>
+            </div>
+          </div>
+          
+          <div class="poster-actions">
+            <button mat-raised-button color="primary" (click)="buyTicket()">
+              <mat-icon>confirmation_number</mat-icon>
+              Kupi kartu
+            </button>
+          </div>
+        </div>
+
+        <div class="details-section">
+          
+          <div class="title-section">
+            <h2 class="movie-title">{{ movie.title }}</h2>
+            
+            <div class="genres">
+              <mat-chip-set>
+                <mat-chip *ngFor="let genre of movie.genres" class="genre-chip">
+                  {{ genre }}
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+          </div>
+
+          <div class="movie-stats">
+            <div class="stat-card">
+              <div class="stat-icon">📅</div>
+              <div class="stat-content">
+                <div class="stat-label">Datum izlaska</div>
+                <div class="stat-value">{{ formatDate(movie.releaseDate) }}</div>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">⏱️</div>
+              <div class="stat-content">
+                <div class="stat-label">Trajanje</div>
+                <div class="stat-value">{{ getMovieDuration() }}</div>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">🎬</div>
+              <div class="stat-content">
+                <div class="stat-label">Režiser</div>
+                <div class="stat-value">{{ movie.director }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rating-section">
+            <h3>Ocene</h3>
+            
+            <div class="average-rating" *ngIf="totalRatings > 0">
+              <div class="rating-display">
+                <div class="stars-large">
+                  <span *ngFor="let star of [1, 2, 3, 4, 5]">
+                    @if (star <= averageRating) {
+                      ⭐
+                    }
+                  </span>
+                </div>
+                <div class="rating-info">
+                  <div class="rating-score">{{ averageRating.toFixed(1) }}/5</div>
+                  <div class="rating-count">
+                    {{ totalRatings }} {{totalRatings <= 5 ? 'ocene' : 'ocena' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="no-ratings" *ngIf="totalRatings === 0">
+              <p>Nije ocenjen</p>
+            </div>
+
+            <div class="user-rating" *ngIf="userRating">
+              <h4>Vaša ocena</h4>
+              <div class="user-rating-display">
+                <div class="stars-medium">
+                  <span *ngFor="let star of [1, 2, 3, 4, 5]">
+                    @if (star <= userRating) {
+                      ⭐
+                    }
+                  </span>
+                </div>
+                <span class="user-rating-text">{{ userRating }}/5</span>
+              </div>
+            </div>
+
+            <div class="no-user-rating" *ngIf="!userRating">
+              <p>Još niste ocenili ovaj film. Gledajte ga prvo da biste mogli da ga ocenite.</p>
+            </div>
+          </div>
+
+          <div class="description-section">
+            <h3>Sinopsis</h3>
+            <p class="movie-description">{{ movie.description }}</p>
+          </div>
+
+          <div class="cast-section">
+            <h3>Glumci</h3>
+            <div class="actors-list">
+              <mat-chip-set>
+                <mat-chip *ngFor="let actor of movie.actors" class="actor-chip">
+                  {{ actor }}
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

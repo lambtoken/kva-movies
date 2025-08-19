@@ -1,6 +1,16 @@
 <div class="container">
     <mat-card class="movie-card">
-        <img mat-card-image src="{{movie.imageUrl}}" alt="Movie poster">
+        <div class="poster-container">
+            <img mat-card-image src="{{movie.imageUrl}}" alt="Movie poster">
+            
+            <div class="rating-overlay" *ngIf="hasUserRatedMovie()">
+                <div class="star-badge">
+                    <span class="star-icon">⭐</span>
+                    <span class="rating-value">{{ getUserRating() }}</span>
+                </div>
+            </div>
+        </div>
+        
         <div class="details">
             <div class="details-content">
                 <p>Zanr: {{movie.genres[0]}}</p>
@@ -12,7 +22,7 @@
     
     <mat-card-title>{{movie.title}}</mat-card-title>
     <mat-card-actions>
-        <button mat-button>Kupi kartu</button>
-        <button mat-button>Detalji</button>
+        <button mat-button (click)="onBuyTicket()">Kupi kartu</button>
+        <button mat-button (click)="onShowDetails()">Detalji</button>
     </mat-card-actions>
 </div>

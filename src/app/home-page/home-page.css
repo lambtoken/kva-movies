@@ -1,4 +1,22 @@
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+app-movie-search-filter {
+  display: block;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+MovieList {
+  display: block;
+  width: 100%;
+}
+
 p {
-    background-color: gray;
-    width: 100%;
+  background-color: transparent;
+  width: auto;
 }

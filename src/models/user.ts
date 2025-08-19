@@ -1,5 +1,4 @@
 import { Ticket } from './ticket';
-import { Genre } from './movie';
 
 export interface User {
   firstName: string;
@@ -9,5 +8,5 @@ export interface User {
   phone: string;
   address: string;
   reservations: Ticket[];
-  favoriteGenres: Genre[];
+  favoriteGenres: string[];
 }

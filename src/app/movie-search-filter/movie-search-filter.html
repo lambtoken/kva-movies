@@ -1,0 +1,222 @@
+<div class="search-filter-container">
+  <div class="main-search">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Pretraži filmove (naslov, opis, žanr, režiser, glumci...)</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="filters.searchText" 
+        (ngModelChange)="onSearchTextChange()"
+      >
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="toggleExpanded()"
+      class="filter-toggle"
+    >
+      <mat-icon>{{ isExpanded ? 'expand_less' : 'tune' }}</mat-icon>
+      {{ isExpanded ? 'Sakrij filtere' : 'Prikaži filtere' }}
+    </button>
+  </div>
+
+  <div class="advanced-filters" [class.expanded]="isExpanded">
+    <mat-expansion-panel [expanded]="isExpanded" hideToggle>
+      <div class="filters-grid">
+        
+        <div class="filter-group">
+          <h4>Žanr</h4>
+          <mat-form-field appearance="outline">
+            <mat-label>Izaberi žanrove</mat-label>
+            <mat-select 
+              multiple 
+              [(ngModel)]="filters.selectedGenres"
+              (ngModelChange)="onGenreSelectionChange()"
+            >
+              <mat-option *ngFor="let genre of availableGenres" [value]="genre">
+                {{ genre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <div class="selected-chips" *ngIf="filters.selectedGenres.length > 0">
+            <mat-chip-set>
+              <mat-chip 
+                *ngFor="let genre of filters.selectedGenres"
+                removable
+                (removed)="removeGenre(genre)"
+              >
+                {{ genre }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Režiser</h4>
+          <mat-form-field appearance="outline">
+            <mat-label>Izaberi režisera</mat-label>
+            <mat-select 
+              [(ngModel)]="filters.director"
+              (ngModelChange)="onDirectorChange()"
+            >
+              <mat-option value="">Svi režiseri</mat-option>
+              <mat-option *ngFor="let director of availableDirectors" [value]="director">
+                {{ director }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="filter-group">
+          <h4>Glumac</h4>
+          <mat-form-field appearance="outline">
+            <mat-label>Izaberi glumca</mat-label>
+            <mat-select 
+              [(ngModel)]="filters.actor"
+              (ngModelChange)="onActorChange()"
+            >
+              <mat-option value="">Svi glumci</mat-option>
+              <mat-option *ngFor="let actor of availableActors" [value]="actor">
+                {{ actor }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="filter-group">
+          <h4>Trajanje</h4>
+          <mat-form-field appearance="outline">
+            <mat-label>Trajanje filma</mat-label>
+            <mat-select 
+              [(ngModel)]="filters.duration"
+              (ngModelChange)="onDurationChange()"
+            >
+              <mat-option value="">Bilo koje</mat-option>
+              <mat-option value="short">Kratak (< 90 min)</mat-option>
+              <mat-option value="medium">Srednji (90-120 min)</mat-option>
+              <mat-option value="long">Dugačak (> 120 min)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="filter-group date-range">
+          <h4>Datum izlaska</h4>
+          <div class="date-inputs">
+            <mat-form-field appearance="outline">
+              <mat-label>Od</mat-label>
+              <input 
+                matInput 
+                [matDatepicker]="releasePicker1"
+                [(ngModel)]="filters.releaseDateStart"
+                (ngModelChange)="onDateChange()"
+              >
+              <mat-datepicker-toggle matSuffix [for]="releasePicker1"></mat-datepicker-toggle>
+              <mat-datepicker #releasePicker1></mat-datepicker>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Do</mat-label>
+              <input 
+                matInput 
+                [matDatepicker]="releasePicker2"
+                [(ngModel)]="filters.releaseDateEnd"
+                (ngModelChange)="onDateChange()"
+              >
+              <mat-datepicker-toggle matSuffix [for]="releasePicker2"></mat-datepicker-toggle>
+              <mat-datepicker #releasePicker2></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="filter-group date-range">
+          <h4>Datum prikazivanja</h4>
+          <div class="date-inputs">
+            <mat-form-field appearance="outline">
+              <mat-label>Od</mat-label>
+              <input 
+                matInput 
+                [matDatepicker]="screeningPicker1"
+                [(ngModel)]="filters.screeningDateStart"
+                (ngModelChange)="onDateChange()"
+              >
+              <mat-datepicker-toggle matSuffix [for]="screeningPicker1"></mat-datepicker-toggle>
+              <mat-datepicker #screeningPicker1></mat-datepicker>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Do</mat-label>
+              <input 
+                matInput 
+                [matDatepicker]="screeningPicker2"
+                [(ngModel)]="filters.screeningDateEnd"
+                (ngModelChange)="onDateChange()"
+              >
+              <mat-datepicker-toggle matSuffix [for]="screeningPicker2"></mat-datepicker-toggle>
+              <mat-datepicker #screeningPicker2></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="filter-group slider-group">
+          <h4>Cena karte</h4>
+          <div class="price-display">
+            {{ formatPrice(filters.priceMin) }} - {{ formatPrice(filters.priceMax) }}
+          </div>
+          <mat-slider 
+            [min]="priceRange.min" 
+            [max]="priceRange.max" 
+            [step]="50"
+            discrete
+            showTickMarks
+          >
+            <input 
+              matSliderStartThumb 
+              [(ngModel)]="filters.priceMin"
+              (ngModelChange)="onPriceChange()"
+            >
+            <input 
+              matSliderEndThumb 
+              [(ngModel)]="filters.priceMax"
+              (ngModelChange)="onPriceChange()"
+            >
+          </mat-slider>
+        </div>
+
+        <div class="filter-group slider-group">
+          <h4>Minimalna ocena</h4>
+          <div class="rating-display">
+            {{ formatRating(filters.ratingMin) }}
+          </div>
+          <mat-slider 
+            [min]="ratingRange.min" 
+            [max]="ratingRange.max" 
+            [step]="1"
+            discrete
+            showTickMarks
+          >
+            <input 
+              matSliderThumb 
+              [(ngModel)]="filters.ratingMin"
+              (ngModelChange)="onRatingChange()"
+            >
+          </mat-slider>
+        </div>
+
+      </div>
+
+      <div class="filter-actions">
+        <button 
+          mat-stroked-button 
+          (click)="clearFilters()"
+          class="clear-filters"
+        >
+          <mat-icon>clear</mat-icon>
+          Poništi filtere
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div> 

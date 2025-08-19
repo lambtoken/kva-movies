@@ -13,6 +13,50 @@
     position: relative;
 }
 
+.poster-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.rating-overlay {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+}
+
+.star-badge {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+    color: white;
+    border-radius: 20px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.star-icon {
+    font-size: 1.1rem;
+}
+
+.rating-value {
+    font-weight: 700;
+}
+
+@keyframes starGlow {
+    0% {
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+        transform: scale(1);
+    }
+    100% {
+        box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
+        transform: scale(1.05);
+    }
+}
+
 mat-card-title {
     font-size: 1.2em;
     margin: 10px 0;
@@ -36,13 +80,30 @@ button {
     background-color: var(--gray);
     width: 87px;
     transition: background-color 0.3s ease;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
 }
 
-button:hover {
+button:first-child {
+    background-color: white;
+    color: var(--title);
+}
+
+button:first-child:hover {
+    background-color: #dfdfdf;
     font-weight: 600;
-    color: var(--gray);
-    background-color: #948c21;
-    /* border: 1px solid #ccda12; */
+}
+
+button:last-child {
+    background-color: var(--wall);
+    color: white;
+    border: 1px solid var(--wall);
+}
+
+button:last-child:hover {
+    background-color: var(--wall);
+    color: white;
 }
 
 mat-card-actions {
@@ -58,7 +119,7 @@ mat-card-actions {
     position: absolute;
     bottom: 0;
     left: 0;
-    background-color: var(--gray);
+    background-color: rgb(228, 231, 226);
     transform: translateY(100%);
     transition: transform 0.4s ease-in-out;
     clip-path: polygon(0 20px, 100% 0, 100% 100%, 0 100%);

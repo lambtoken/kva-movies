@@ -1,1 +1,146 @@
-<p>profile-page works!</p>
+<div class="profile-container">
+  <div class="profile-card">
+    <h1>Profil</h1>
+    
+    <div *ngIf="message" class="message" [class.success]="message.includes('successfully')">
+      {{ message }}
+    </div>
+
+    <div *ngIf="user" class="profile-content">
+      <!-- View Mode -->
+      <div *ngIf="!isEditing" class="profile-info">
+        <div class="info-group">
+          <label>Ime:</label>
+          <span>{{ user.firstName }}</span>
+        </div>
+        
+        <div class="info-group">
+          <label>Prezime:</label>
+          <span>{{ user.lastName }}</span>
+        </div>
+        
+        <div class="info-group">
+          <label>Email:</label>
+          <span>{{ user.email }}</span>
+        </div>
+        
+        <div class="info-group">
+          <label>Telefon:</label>
+          <span>{{ user.phone }}</span>
+        </div>
+        
+        <div class="info-group">
+          <label>Adresa:</label>
+          <span>{{ user.address }}</span>
+        </div>
+        
+        <div class="info-group">
+          <label>Rezervacije:</label>
+          <span>
+            {{ user.reservations.length }}
+            @if (user.reservations.length === 1) { 
+              karta 
+            } @else if (user.reservations.length >= 2 && user.reservations.length <= 4) { 
+              karte
+            } @else { 
+              karata
+            } 
+          </span>
+        </div>
+        
+        <div class="info-group">
+          <label>Omiljeni žanrovi:</label>
+          <span>{{ user.favoriteGenres.length > 0 ? user.favoriteGenres.join(', ') : 'Nema izabranih' }}</span>
+        </div>
+        
+        <button class="edit-btn" (click)="startEditing()">Izmeni profil</button>
+      </div>
+
+      <!-- Edit Mode -->
+      <div *ngIf="isEditing" class="edit-form">
+        <div class="form-group">
+          <label for="firstName">Ime:</label>
+          <input 
+            type="text" 
+            id="firstName" 
+            [(ngModel)]="editForm.firstName" 
+            required
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="lastName">Prezime:</label>
+          <input 
+            type="text" 
+            id="lastName" 
+            [(ngModel)]="editForm.lastName" 
+            required
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input 
+            type="email" 
+            id="email" 
+            [(ngModel)]="editForm.email" 
+            required
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Telefon:</label>
+          <input 
+            type="tel" 
+            id="phone" 
+            [(ngModel)]="editForm.phone" 
+            required
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="address">Adresa:</label>
+          <textarea 
+            id="address" 
+            [(ngModel)]="editForm.address" 
+            rows="3"
+            required
+          ></textarea>
+        </div>
+        
+        <!-- Favorite Genres Selection -->
+        <div class="form-group">
+          <label>Omiljeni žanrovi:</label>
+          <div class="genres-container">
+            <div class="genre-checkboxes">
+              <div 
+                *ngFor="let genre of availableGenres" 
+                class="genre-option"
+              >
+                <input 
+                  type="checkbox" 
+                  [id]="'genre-' + genre" 
+                  [checked]="isGenreSelected(genre)"
+                  (change)="toggleGenre(genre)"
+                  class="genre-checkbox"
+                >
+                <label [for]="'genre-' + genre" class="genre-label">
+                  {{ genre }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="button-group">
+          <button class="save-btn" (click)="saveChanges()">Sačuvaj izmene</button>
+          <button class="cancel-btn" (click)="cancelEditing()">Poništi</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!user" class="no-user">
+      <p>Korisnik nije pronadjen. Molim Vas ulogujte se.</p>
+    </div>
+  </div>
+</div>

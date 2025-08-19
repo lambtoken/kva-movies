@@ -43,7 +43,7 @@ export class LoginRegister {
       
       try {
         if (this.server.loginUser(email!, password!)) {
-          this.successMessage = 'Prijava uspesna!';
+          this.successMessage = 'Prijava uspešna!';
           this.errorMessage = '';
           this.loginForm.reset();
           setTimeout(() => {
@@ -55,7 +55,7 @@ export class LoginRegister {
           this.successMessage = '';
         }
       } catch (error) {
-        this.errorMessage = 'Doslo je do greske prilikom prijave. Molim pokusajte ponovo.';
+        this.errorMessage = 'Došlo je do greške prilikom prijave. Molim pokušajte ponovo.';
         this.successMessage = '';
       }
     }
@@ -67,7 +67,7 @@ export class LoginRegister {
       
       try {
         if (this.server.registerUser(firstName!, lastName!, email!, password!, '', '')) {
-          this.successMessage = 'Registracija uspesna! Redirektujemo vas na pocetnu stranicu...';
+          this.successMessage = 'Registracija uspešna! Redirektujemo Vas na početnu stranicu...';
           this.errorMessage = '';
           this.registerForm.reset();
           setTimeout(() => {
@@ -75,11 +75,11 @@ export class LoginRegister {
             window.location.href = '/home';
           }, 1000);
         } else {
-          this.errorMessage = 'Korisnik sa tim email-om vec postoji';
+          this.errorMessage = 'Korisnik sa tim email-om već postoji';
           this.successMessage = '';
         }
       } catch (error) {
-        this.errorMessage = 'Doslo je do greske prilikom registracije. Molim pokusajte ponovo.';
+        this.errorMessage = 'Došlo je do greške prilikom registracije. Molim pokušajte ponovo.';
         this.successMessage = '';
       }
     }

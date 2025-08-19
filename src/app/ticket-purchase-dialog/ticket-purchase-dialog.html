@@ -1,0 +1,98 @@
+<div class="ticket-dialog">
+  <h2 mat-dialog-title>Kupovina karte za {{ data.movie.title }}</h2>
+  
+  <div mat-dialog-content class="dialog-content">
+    <div class="movie-info">
+      <img [src]="data.movie.imageUrl" [alt]="data.movie.title" class="movie-poster">
+      <div class="movie-details">
+        <h3>{{ data.movie.title }}</h3>
+        <p><strong>Žanr:</strong> {{ data.movie.genres.join(', ') }}</p>
+        <p><strong>Režiser:</strong> {{ data.movie.director }}</p>
+        <p class="description">{{ data.movie.description }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="message" class="message-alert">
+      <p>{{ message }}</p>
+    </div>
+
+    <div class="screening-section">
+      <h4>Izaberite vreme:</h4>
+      <div class="screening-list" *ngIf="availableScreenings.length > 0">
+        <div 
+          *ngFor="let screening of availableScreenings"
+          class="screening-item"
+          [class.selected]="selectedScreening?.id === screening.id"
+          (click)="onScreeningSelected(screening)"
+        >
+          <div class="screening-time">
+            {{ formatScreeningTime(screening.screeningDate) }}
+          </div>
+          <div class="screening-info">
+            <span class="price">{{ screening.price }} RSD</span>
+            <span class="seats">{{ getAvailableSeatCount(screening) }} slobodnih mesta</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="availableScreenings.length === 0" class="no-screenings">
+        <p>Nema dostupnih projekcija za ovaj film.</p>
+      </div>
+    </div>
+
+    <div class="seat-section" *ngIf="selectedScreening">
+      <h4>Izaberite sedište:</h4>
+      <div class="seat-grid">
+        <div 
+          *ngFor="let seat of availableSeats"
+          class="seat"
+          [class.selected]="selectedSeat === seat"
+          (click)="onSeatSelected(seat)"
+        >
+          {{ seat }}
+        </div>
+      </div>
+      <div class="seat-legend">
+        <div class="legend-item">
+          <div class="seat available"></div>
+          <span>Dostupno</span>
+        </div>
+        <div class="legend-item">
+          <div class="seat selected"></div>
+          <span>Selektovano</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary" *ngIf="selectedScreening && selectedSeat">
+      <h4>Pregled porudžbine:</h4>
+      <div class="summary-item">
+        <span>Movie:</span>
+        <span>{{ data.movie.title }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Date & Time:</span>
+        <span>{{ formatScreeningTime(selectedScreening.screeningDate) }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Seat:</span>
+        <span>{{ selectedSeat }}</span>
+      </div>
+      <div class="summary-item total">
+        <span>Ukupna cena:</span>
+        <span>{{ selectedScreening.price }} RSD</span>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-button (click)="onCancel()">Odustani</button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      [disabled]="!canPurchase()"
+      (click)="onPurchase()"
+    >
+      Kupi kartu
+    </button>
+  </div>
+</div> 

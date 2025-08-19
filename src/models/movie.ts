@@ -1,13 +1,3 @@
-export enum Genre {
-  Action,
-  Comedy,
-  Drama,
-  Horror,
-  SciFi,
-  Romance, 
-  Thriller
-}
-
 export interface Movie {
   id: string;
   title: string;
