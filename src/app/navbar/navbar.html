@@ -2,16 +2,19 @@
     <h1>
         kva filmovi
     </h1>
-    <div id="links">
+    <div class="nav-right">
+        <div id="links">
+            @if (isAuthenticated()) {
+            <NavbarLink name="Filmovi" path="/home"></NavbarLink>
+            <NavbarLink name="Rezervacije" path="/reservations"></NavbarLink>
+            <NavbarLink name="Profil" path="/profile"></NavbarLink>
+            }
+        </div>
         @if (isAuthenticated()) {
-            <NavbarLink name="Home" path="/home"></NavbarLink>
-            <NavbarLink name="About" path="/about"></NavbarLink>
-            <div class="user-section">
-                <span class="welcome">Welcome, {{ currentUser?.firstName }}!</span>
-                <button (click)="logout()" class="logout-btn">Logout</button>
-            </div>
-        } @else {
-            <NavbarLink name="Login" path="/landing"></NavbarLink>
+        <div class="user-section">
+            <span class="welcome">Dobrodošli, {{ currentUser?.firstName }}!</span>
+            <button (click)="logout()" class="logout-btn">Odjava</button>
+        </div>
         }
     </div>
 </nav>

@@ -1,0 +1,159 @@
+<div class="reservations-container">
+  <div class="reservations-card">
+    <h1>My Reservations</h1>
+    
+    <div *ngIf="message" class="message success">
+      {{ message }}
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <p>Loading reservations...</p>
+    </div>
+
+    <div *ngIf="!loading && user" class="reservations-content">
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-number">{{ reservations.length }}</span>
+          <span class="stat-label">Total Reservations</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ getActiveReservations().length }}</span>
+          <span class="stat-label">Active</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ getWatchedReservations().length }}</span>
+          <span class="stat-label">Watched</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ getCanceledReservations().length }}</span>
+          <span class="stat-label">Canceled</span>
+        </div>
+      </div>
+
+      <div *ngIf="reservations.length === 0" class="no-reservations">
+        <p>You don't have any reservations yet.</p>
+        <a routerLink="/home" class="browse-link">Browse movies</a>
+      </div>
+
+      <div *ngIf="reservations.length > 0" class="reservations-list">
+        <div *ngFor="let reservation of reservations" class="reservation-item">
+          <div class="movie-info">
+            <div class="movie-poster">
+              <img *ngIf="reservation.movie?.imageUrl" [src]="reservation.movie?.imageUrl" [alt]="reservation.movie?.title || 'Movie'">
+              <div *ngIf="!reservation.movie?.imageUrl" class="no-poster">
+                <span>No Image</span>
+              </div>
+            </div>
+            
+            <div class="movie-details">
+              <h3>{{ reservation.movie?.title || 'Unknown Movie' }}</h3>
+              <p class="movie-description">{{ reservation.movie?.description || 'No description available' }}</p>
+              
+              <div class="ticket-details">
+                <div class="detail-row">
+                  <span class="label">Screening Date:</span>
+                  <span class="value">{{ getScreeningDateText(reservation) }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Seat Number:</span>
+                  <span class="value">{{ reservation.ticket.seatNumber }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Price:</span>
+                  <span class="value">{{ reservation.ticket.price }} RSD</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Purchase Date:</span>
+                  <span class="value">{{ formatPurchaseDate(reservation.ticket.purchaseDate) }}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="label">Status:</span>
+                  <span class="value status-badge" [class]="getStatusClass(reservation.ticket.status)">
+                    {{ getStatusText(reservation.ticket.status) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="reservation-actions">
+            <div *ngIf="isReserved(reservation.ticket.status)" class="status-actions">
+              <div class="action-buttons">
+                <button 
+                  class="action-btn watched-btn"
+                  (click)="markAsWatched(reservation)"
+                  title="Mark as watched to enable rating"
+                >
+                  Mark as Watched
+                </button>
+                <button 
+                  class="action-btn cancel-btn"
+                  (click)="cancelReservation(reservation)"
+                  title="Cancel this reservation"
+                >
+                  Cancel Reservation
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="isWatched(reservation.ticket.status)" class="rating-section">
+              <div *ngIf="!reservation.ticket.rating" class="rate-movie">
+                <p class="rating-prompt">How was this movie?</p>
+                <div class="rating-stars interactive">
+                  <button 
+                    *ngFor="let star of [1,2,3,4,5]; let i = index" 
+                    class="star-btn"
+                    [class.filled]="isStarFilled(reservation, star)"
+                    [class.hover]="hoverRatings[reservation.ticket.id] >= star"
+                    (click)="rateMovie(reservation, star)"
+                    (mouseenter)="onRatingHover(reservation.ticket.id, star)"
+                    (mouseleave)="onRatingLeave(reservation.ticket.id)"
+                    [title]="star + ' star' + (star > 1 ? 's' : '')"
+                  >
+                    ⭐
+                  </button>
+                </div>
+                <div class="rating-labels">
+                  <span class="rating-label">Poor</span>
+                  <span class="rating-label">Excellent</span>
+                </div>
+              </div>
+              
+              <div *ngIf="reservation.ticket.rating" class="rated">
+                <p class="rating-title">Your rating:</p>
+                <div class="rating-display">
+                  <div class="stars-display">
+                    <span *ngFor="let star of [1,2,3,4,5]"> 
+                      @if(star <= reservation.ticket.rating) {
+                      ⭐
+                      }
+                    </span>
+                  </div>
+                  <span class="rating-text">{{ reservation.ticket.rating }}/5 stars</span>
+                </div>
+                <button 
+                  class="re-rate-btn"
+                  (click)="enableReRating(reservation)"
+                  title="Change your rating"
+                >
+                  Change Rating
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="isCanceled(reservation.ticket.status)" class="canceled-status">
+              <div class="status-indicator canceled">
+                <span class="status-icon">🚫</span>
+                <span class="status-text">This reservation has been canceled</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && !user" class="no-user">
+      <p>No user data found. Please log in.</p>
+    </div>
+  </div>
+</div> 

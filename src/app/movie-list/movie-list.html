@@ -5,6 +5,13 @@
         </div>
     }
     
+    @if (movies.length === 0 && allMovies.length > 0) {
+        <div class="no-results">
+            <p>Nema filmova koji odgovaraju vašim kriterijumima</p>
+            <p>Probajte sa drugim kriterijumima.</p>
+        </div>
+    }
+    
     @for (movie of movies; track movie.id) {
         <MovieCard [movie]="movie"></MovieCard>
     } 

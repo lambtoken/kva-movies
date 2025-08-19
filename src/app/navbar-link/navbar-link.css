@@ -1,9 +1,12 @@
 a {
-    color: white;
+    color: var(--title);
+    background-color: none;
     text-decoration: none;
+    display: inline-block;
+    height: 100%;
     font-weight: 500;
-    font-size: 16px;
-    padding: 0.5rem 1rem;
+    font-size: 20px;
+    padding: 1rem 1rem;
     border-radius: 4px;
     transition: background-color 0.3s;
 }

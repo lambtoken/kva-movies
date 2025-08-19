@@ -11,7 +11,25 @@ nav {
     font-weight: bold;
     padding: 0 20px;
     color: var(--white);
-    background-color: var(--blue);
+    background-color: white;
+}
+
+nav h1 {
+    white-space: nowrap;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+#links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .user-section {
@@ -22,7 +40,7 @@ nav {
 }
 
 .welcome {
-    color: #ffd700;
+    color: black;
     font-weight: 500;
 }
 

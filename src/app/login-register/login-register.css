@@ -16,11 +16,11 @@ label {
   flex-direction: column;
   font-weight: 500;
   font-size: 0.95rem;
-  color: #333;
+  color: #dadada;
 }
 
 input {
-    background-color: #9daf9c;
+    background-color: #eeeeee;
 }
 
 input:focus {
@@ -42,7 +42,6 @@ input[type="tel"] {
 input.ng-invalid.ng-touched,
 input.ng-invalid.ng-dirty {
   border-color: #f44336;
-  background-color: #9daf9c;
 }
 
 div {
@@ -96,7 +95,7 @@ button[type="button"]:hover {
 
 h2 {
   text-align: center;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 1rem;
   font-size: 1.5rem;
 }

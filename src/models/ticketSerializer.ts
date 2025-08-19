@@ -12,6 +12,7 @@ export class TicketSerializer {
     return {
       ...data,
       purchaseDate: new Date(data.purchaseDate),
+      rating: data.rating ? Number(data.rating) : undefined,
     };
   }
 }

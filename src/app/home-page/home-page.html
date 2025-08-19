@@ -1,1 +1,4 @@
-<MovieList />
+<div class="home-container">
+  <app-movie-search-filter (filtersChanged)="onFiltersChanged($event)"></app-movie-search-filter>
+  <MovieList [filters]="currentFilters" />
+</div>

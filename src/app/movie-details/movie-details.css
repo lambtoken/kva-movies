@@ -1,0 +1,304 @@
+.movie-details-container {
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.movie-details-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.loading, .error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 2rem;
+}
+
+.loading mat-card, .error mat-card {
+  text-align: center;
+  padding: 2rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: white;
+  color: black;
+}
+
+.back-button {
+  color: white;
+}
+
+.header-actions h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.movie-content {
+  padding: 0;
+}
+
+.movie-info {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.poster-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.poster-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.movie-poster {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.user-rating-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.user-rating-badge {
+  background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.rating-icon {
+  font-size: 1.2rem;
+}
+
+.rating-text {
+  font-size: 0.9rem;
+}
+
+.poster-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.poster-actions button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.title-section {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 1.5rem;
+}
+
+.movie-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.genres {
+  margin-top: 1rem;
+}
+
+.genre-chip {
+  color: white;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.movie-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #ddd;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  width: 50px;
+  text-align: center;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.rating-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.rating-section h3, .rating-section h4 {
+  margin: 0 0 1.5rem 0;
+  color: #333;
+}
+
+.average-rating {
+  margin-bottom: 2rem;
+}
+
+.rating-display {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.stars-large, .stars-medium {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.stars-large .star {
+  font-size: 2rem;
+}
+
+.stars-medium .star {
+  font-size: 1.5rem;
+}
+
+.star {
+  color: #ddd;
+  transition: color 0.3s ease;
+}
+
+.star.filled {
+  color: #ffc107;
+  filter: drop-shadow(0 0 4px rgba(255, 193, 7, 0.5));
+}
+
+.rating-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rating-score {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.rating-count {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.user-rating-display {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-rating-text {
+  font-weight: 600;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.no-ratings, .no-user-rating {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 1rem;
+}
+
+.description-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.description-section h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.movie-description {
+  line-height: 1.7;
+  color: #555;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.cast-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cast-section h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.actor-chip {
+  background: #e9ecef;
+  color: #333;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.actor-chip:hover {
+  background: #dee2e6;
+}
