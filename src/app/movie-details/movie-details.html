@@ -121,20 +121,6 @@
               <p>Nije ocenjen</p>
             </div>
 
-            <div class="user-rating" *ngIf="userRating">
-              <h4>Vaša ocena</h4>
-              <div class="user-rating-display">
-                <div class="stars-medium">
-                  <span *ngFor="let star of [1, 2, 3, 4, 5]">
-                    @if (star <= userRating) {
-                      ⭐
-                    }
-                  </span>
-                </div>
-                <span class="user-rating-text">{{ userRating }}/5</span>
-              </div>
-            </div>
-
             <div class="no-user-rating" *ngIf="!userRating">
               <p>Još niste ocenili ovaj film. Gledajte ga prvo da biste mogli da ga ocenite.</p>
             </div>
