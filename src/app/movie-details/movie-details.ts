@@ -74,13 +74,14 @@ export class MovieDetails implements OnInit {
   private getUserRating(): number | null {
     const currentUser = this.pseudoServer.getCurrentUser();
     if (!currentUser || !this.movie) return null;
+    const movieId = this.movie.id; // Store id to avoid null checks
 
     for (const ticket of currentUser.reservations) {
       if (ticket.rating && ticket.status === ScreeningStatus.Watched) {
-        const screenings = this.pseudoServer.generateRandomScreenings([this.movie], 20);
-        const screening = screenings.find(s => s.id === ticket.screeningId);
+        const screenings = this.pseudoServer.getAllScreenings();
+        const screening = screenings.find(s => s.id === ticket.screeningId && s.movieId === movieId);
         
-        if (screening && screening.movieId === this.movie.id) {
+        if (screening) {
           return ticket.rating;
         }
       }
@@ -91,6 +92,7 @@ export class MovieDetails implements OnInit {
 
   private calculateAverageRating() {
     if (!this.movie) return;
+    const movieId = this.movie.id; // Store id to avoid null checks
 
     const allUsers = this.pseudoServer.getAllUsers();
     const ratings: number[] = [];
@@ -98,9 +100,9 @@ export class MovieDetails implements OnInit {
     allUsers.forEach(user => {
       user.reservations.forEach(ticket => {
         if (ticket.rating && ticket.status === ScreeningStatus.Watched) {
-          const screenings = this.pseudoServer.generateRandomScreenings([this.movie!], 20);
-          const screening = screenings.find(s => s.id === ticket.screeningId);
-          if (screening && screening.movieId === this.movie!.id) {
+          const screenings = this.pseudoServer.getAllScreenings();
+          const screening = screenings.find(s => s.id === ticket.screeningId && s.movieId === movieId);
+          if (screening) {
             ratings.push(ticket.rating);
           }
         }
@@ -168,8 +170,8 @@ export class MovieDetails implements OnInit {
 
         if (ticket) {
           const notificationData: NotificationData = {
-            title: 'Purchase Successful',
-            message: `Ticket purchased successfully! Seat ${result.selectedSeat} for ${this.movie!.title}`,
+            title: 'Uspešna kupovina',
+            message: `Karta kupljena uspešno! Mesto ${result.selectedSeat} za ${this.movie!.title}`,
             type: 'success'
           };
           this.dialog.open(NotificationDialog, {
@@ -178,8 +180,8 @@ export class MovieDetails implements OnInit {
           });
         } else {
           const notificationData: NotificationData = {
-            title: 'Purchase Failed',
-            message: `Sorry, seat ${result.selectedSeat} is no longer available. Please select another seat.`,
+            title: 'Neuspešna kupovina',
+            message: `Mesto ${result.selectedSeat} vec zauzeto. Molim Vas pokušajte drugo mesto.`,
             type: 'error'
           };
           this.dialog.open(NotificationDialog, {

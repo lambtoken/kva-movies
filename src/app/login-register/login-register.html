@@ -16,10 +16,10 @@
             <div class="error">Sifra je potrebna</div>
         }
 
-        <button type="submit" [disabled]="loginForm.invalid">Login</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
     </form>
 
-    <button (click)="isLogin = false" type="button">Nemate nalog? Registrujte se</button>
+    <button mat-button color="primary" (click)="isLogin = false" type="button">Nemate nalog? Registrujte se</button>
 } @else {
     <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
         <h2>Registracija</h2>
@@ -62,10 +62,10 @@
             <div class="error">Passwordi nisu isti</div>
         }
 
-        <button type="submit" [disabled]="registerForm.invalid">Register</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Register</button>
     </form>
 
-    <button (click)="isLogin = true" type="button">Vec imate nalog? Prijavite se.</button>
+    <button mat-button color="primary" (click)="isLogin = true" type="button">Vec imate nalog? Prijavite se.</button>
 }
 
 @if (errorMessage) {

@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PseudoServer } from '../pseudo-server';
+import { User } from '../../models/user';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'LoginRegister',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatButtonModule],
   templateUrl: './login-register.html',
   styleUrl: './login-register.css'
 })
@@ -35,7 +37,40 @@ export class LoginRegister {
     return pass === confirm ? null : { passwordMismatch: true };
   }
 
-  constructor(private server: PseudoServer, private router: Router) {}
+  constructor(private server: PseudoServer, private router: Router) {
+    this.setupAdminAccount();
+  }
+
+  private setupAdminAccount() {
+    if (!localStorage.getItem("kva-movies")) {
+      localStorage.setItem("kva-movies", JSON.stringify({users: []}));
+    }
+
+    let storageStr = localStorage.getItem("kva-movies");
+    if (!storageStr) {
+      return;
+    }
+
+    let storage: { users: User[] } = JSON.parse(storageStr);
+    const adminEmail = "admin@kvamovies.com";
+
+    if (!storage.users.find((u: User) => u.email === adminEmail)) {
+      const adminUser: User = {
+        firstName: "Admin",
+        lastName: "Admin",
+        email: adminEmail,
+        password: "123123",
+        phone: "+381699999999",
+        address: "Adresa",
+        reservations: [],
+        favoriteGenres: []
+      };
+
+      storage.users.push(adminUser);
+      localStorage.setItem("kva-movies", JSON.stringify(storage));
+      console.log("Admin account created successfully");
+    }
+  }
 
   onLogin() {
     if (this.loginForm.valid) {
@@ -49,7 +84,7 @@ export class LoginRegister {
           setTimeout(() => {
             // used window location, probably not the best practice but ensures redirection works
             window.location.href = '/home';
-          }, 1000);
+          }, 0);
         } else {
           this.errorMessage = 'Neispravni podaci za prijavu';
           this.successMessage = '';
@@ -67,13 +102,13 @@ export class LoginRegister {
       
       try {
         if (this.server.registerUser(firstName!, lastName!, email!, password!, '', '')) {
-          this.successMessage = 'Registracija uspešna! Redirektujemo Vas na početnu stranicu...';
+          this.successMessage = 'Registracija uspešna! Možete se prijaviti.';
           this.errorMessage = '';
           this.registerForm.reset();
           setTimeout(() => {
-            // used window location, probably not the best practice but ensures redirection works
-            window.location.href = '/home';
-          }, 1000);
+            this.successMessage = '';
+            this.isLogin = true;
+          }, 2000);
         } else {
           this.errorMessage = 'Korisnik sa tim email-om već postoji';
           this.successMessage = '';

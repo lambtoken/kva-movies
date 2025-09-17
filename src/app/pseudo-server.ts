@@ -147,14 +147,16 @@ export class PseudoServer {
       console.error('Error fetching movies from API, using random movies as fallback:', error);
       
       const randomMovies = this.randomMovieGenerator.generateRandomMovies(25);
-      
-      this.saveMoviesToStorage(randomMovies);
-      
+      this.saveMoviesToStorage(randomMovies); 
       return randomMovies;
     }
   }
 
-  public generateRandomScreenings(movies: Movie[], count: number): Screening[] {
+  public getAllScreenings(): Screening[] {
+    return this.screenings;
+  }
+
+  private generateRandomScreenings(movies: Movie[]): Screening[] {
     const existingScreenings = this.loadScreeningsFromStorage();
     if (existingScreenings.length > 0) {
       this.screenings = existingScreenings;
@@ -163,15 +165,27 @@ export class PseudoServer {
 
     const screenings = [];
     const now = new Date();
-    for (let i = 0; i < count; i++) {
-      const randomMovie = movies[Math.floor(Math.random() * movies.length)];
-      const randomDate = new Date(now.getTime() + Math.random() * 10000000000);
-      const randomSeatCount = Math.random() > 0.5 ? 100 : 150;
-      const randomPrice = Math.floor(Math.random() * 1200) + 1000;
+    const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+    
+    for (const movie of movies) {
+      const screeningsPerMovie = 2 + Math.floor(Math.random() * 3);
       
-      const screening: Screening = new Screening(randomMovie.id, randomDate, randomSeatCount, randomPrice);
-      screenings.push(screening);
+      for (let i = 0; i < screeningsPerMovie; i++) {
+        const randomDays = Math.random() * 30;
+        const randomHours = Math.random() * 24;
+        const futureDate = new Date(now.getTime() + (randomDays * oneDay));
+        futureDate.setHours(12 + Math.floor(randomHours));
+        futureDate.setMinutes(0);
+        
+        const randomSeatCount = Math.random() > 0.5 ? 100 : 150;
+        const randomPrice = Math.floor(Math.random() * 500) + 1000;
+        
+        const screening = new Screening(movie.id, futureDate, randomSeatCount, randomPrice);
+        screenings.push(screening);
+      }
     }
+    
+    screenings.sort((a, b) => a.screeningDate.getTime() - b.screeningDate.getTime());
     
     this.screenings = screenings;
     this.saveScreeningsToStorage();
@@ -186,8 +200,9 @@ export class PseudoServer {
   }
 
   public async setup() {
-    const movies = await this.getAllMovies();   
-    this.screenings = this.generateRandomScreenings(movies, 100)
+    const movies = await this.getAllMovies();
+    console.log(`Loaded ${movies.length} movies from storage or API.`);
+    this.screenings = this.generateRandomScreenings(movies);
   }
 
   public generateRandomMoviesForTesting(count: number = 25): Movie[] {
@@ -429,76 +444,6 @@ export class PseudoServer {
       this.updateUserInStorage(currentUser);
     }
 
-    if (currentUser.reservations.length > 0) return;
-
-    const movies = await this.getAllMovies();
-    const screenings = this.generateRandomScreenings(movies, 50);
-    
-    if (screenings.length === 0) return;
-
-    const sampleScreenings = [
-      screenings[Math.floor(Math.random() * screenings.length)],
-      screenings[Math.floor(Math.random() * screenings.length)],
-      screenings[Math.floor(Math.random() * screenings.length)],
-      screenings[Math.floor(Math.random() * screenings.length)],
-      screenings[Math.floor(Math.random() * screenings.length)]
-    ];
-
-    const sampleTickets: Ticket[] = [
-      {
-        id: v4(),
-        screeningId: sampleScreenings[0].id,
-        userId: currentUser.email,
-        seatNumber: 15,
-        purchaseDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-        price: sampleScreenings[0].price,
-        status: ScreeningStatus.Watched,
-        rating: 4
-      },
-      {
-        id: v4(),
-        screeningId: sampleScreenings[1].id,
-        userId: currentUser.email,
-        seatNumber: 12,
-        purchaseDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-        price: sampleScreenings[1].price,
-        status: ScreeningStatus.Watched
-      },
-      {
-        id: v4(),
-        screeningId: sampleScreenings[2].id,
-        userId: currentUser.email,
-        seatNumber: 8,
-        purchaseDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        price: sampleScreenings[2].price,
-        status: ScreeningStatus.Reserved
-      },
-      {
-        id: v4(),
-        screeningId: sampleScreenings[3].id,
-        userId: currentUser.email,
-        seatNumber: 25,
-        purchaseDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
-        price: sampleScreenings[3].price,
-        status: ScreeningStatus.Reserved
-      },
-      {
-        id: v4(),
-        screeningId: sampleScreenings[4].id,
-        userId: currentUser.email,
-        seatNumber: 22,
-        purchaseDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000), // 14 days ago
-        price: sampleScreenings[4].price,
-        status: ScreeningStatus.Canceled
-      }
-    ];
-
-    currentUser.reservations = sampleTickets;
-    this.updateUserInStorage(currentUser);
-
-    sampleTickets.forEach(ticket => {
-      this.addTicketToScreening(ticket.screeningId, ticket);
-    });
   }
 }
 

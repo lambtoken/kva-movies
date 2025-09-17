@@ -86,7 +86,7 @@ export class MovieSearchFilter implements OnInit {
   async loadFilterOptions() {
     try {
       const movies = await this.pseudoServer.getAllMovies();
-      const screenings = this.pseudoServer.generateRandomScreenings(movies, 50);
+      const screenings = this.pseudoServer.getAllScreenings();
 
       const genresSet = new Set<string>();
       movies.forEach(movie => {

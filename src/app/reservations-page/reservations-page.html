@@ -1,38 +1,37 @@
 <div class="reservations-container">
   <div class="reservations-card">
-    <h1>My Reservations</h1>
+    <h1>Moje rezervacije</h1>
     
     <div *ngIf="message" class="message success">
       {{ message }}
     </div>
 
     <div *ngIf="loading" class="loading">
-      <p>Loading reservations...</p>
+      <p>Ucitavanje</p>
     </div>
 
     <div *ngIf="!loading && user" class="reservations-content">
       <div class="stats-bar">
         <div class="stat-item">
           <span class="stat-number">{{ reservations.length }}</span>
-          <span class="stat-label">Total Reservations</span>
+          <span class="stat-label">Ukupno</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">{{ getActiveReservations().length }}</span>
-          <span class="stat-label">Active</span>
+          <span class="stat-label">Aktivne</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">{{ getWatchedReservations().length }}</span>
-          <span class="stat-label">Watched</span>
+          <span class="stat-label">Gledane</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">{{ getCanceledReservations().length }}</span>
-          <span class="stat-label">Canceled</span>
+          <span class="stat-label">Otkazane</span>
         </div>
       </div>
 
       <div *ngIf="reservations.length === 0" class="no-reservations">
-        <p>You don't have any reservations yet.</p>
-        <a routerLink="/home" class="browse-link">Browse movies</a>
+        <p>Nema rezervacija.</p>
       </div>
 
       <div *ngIf="reservations.length > 0" class="reservations-list">
@@ -41,7 +40,7 @@
             <div class="movie-poster">
               <img *ngIf="reservation.movie?.imageUrl" [src]="reservation.movie?.imageUrl" [alt]="reservation.movie?.title || 'Movie'">
               <div *ngIf="!reservation.movie?.imageUrl" class="no-poster">
-                <span>No Image</span>
+                <span>Nema slike</span>
               </div>
             </div>
             
@@ -51,19 +50,19 @@
               
               <div class="ticket-details">
                 <div class="detail-row">
-                  <span class="label">Screening Date:</span>
+                  <span class="label">Vreme prikazivanja:</span>
                   <span class="value">{{ getScreeningDateText(reservation) }}</span>
                 </div>
                 <div class="detail-row">
-                  <span class="label">Seat Number:</span>
+                  <span class="label">Broj mesta:</span>
                   <span class="value">{{ reservation.ticket.seatNumber }}</span>
                 </div>
                 <div class="detail-row">
-                  <span class="label">Price:</span>
+                  <span class="label">Cena:</span>
                   <span class="value">{{ reservation.ticket.price }} RSD</span>
                 </div>
                 <div class="detail-row">
-                  <span class="label">Purchase Date:</span>
+                  <span class="label">Datum rezervacije:</span>
                   <span class="value">{{ formatPurchaseDate(reservation.ticket.purchaseDate) }}</span>
                 </div>
                 <div class="detail-row">
@@ -82,23 +81,23 @@
                 <button 
                   class="action-btn watched-btn"
                   (click)="markAsWatched(reservation)"
-                  title="Mark as watched to enable rating"
+                  title="Označi kao odgledano da bi mogao oceniti film"
                 >
-                  Mark as Watched
+                  Označi kao odgledano
                 </button>
                 <button 
                   class="action-btn cancel-btn"
                   (click)="cancelReservation(reservation)"
                   title="Cancel this reservation"
                 >
-                  Cancel Reservation
+                  Otkaži rezervaciju
                 </button>
               </div>
             </div>
 
             <div *ngIf="isWatched(reservation.ticket.status)" class="rating-section">
               <div *ngIf="!reservation.ticket.rating" class="rate-movie">
-                <p class="rating-prompt">How was this movie?</p>
+                <p class="rating-prompt">Kako biste ocenili ovaj film?</p>
                 <div class="rating-stars interactive">
                   <button 
                     *ngFor="let star of [1,2,3,4,5]; let i = index" 
@@ -113,14 +112,10 @@
                     ⭐
                   </button>
                 </div>
-                <div class="rating-labels">
-                  <span class="rating-label">Poor</span>
-                  <span class="rating-label">Excellent</span>
-                </div>
               </div>
               
               <div *ngIf="reservation.ticket.rating" class="rated">
-                <p class="rating-title">Your rating:</p>
+                <p class="rating-title">Vaša ocena:</p>
                 <div class="rating-display">
                   <div class="stars-display">
                     <span *ngFor="let star of [1,2,3,4,5]"> 
@@ -136,7 +131,7 @@
                   (click)="enableReRating(reservation)"
                   title="Change your rating"
                 >
-                  Change Rating
+                  Promeni ocenu
                 </button>
               </div>
             </div>
@@ -144,7 +139,9 @@
             <div *ngIf="isCanceled(reservation.ticket.status)" class="canceled-status">
               <div class="status-indicator canceled">
                 <span class="status-icon">🚫</span>
-                <span class="status-text">This reservation has been canceled</span>
+                <span class="status-text">
+                  Otkazano
+                </span>
               </div>
             </div>
           </div>
@@ -153,7 +150,8 @@
     </div>
 
     <div *ngIf="!loading && !user" class="no-user">
-      <p>No user data found. Please log in.</p>
+      <p>Nema ulogovanog korisnika. Molim Vas prijavite se da vidite vaše rezervacije.
+      </p>
     </div>
   </div>
 </div> 

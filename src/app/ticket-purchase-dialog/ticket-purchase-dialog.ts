@@ -61,8 +61,7 @@ export class TicketPurchaseDialog implements OnInit {
 
   async generateScreenings() {
     try {
-      const movies = await this.pseudoServer.getAllMovies();
-      const allScreenings = this.pseudoServer.generateRandomScreenings(movies, 50);
+      const allScreenings = this.pseudoServer.getAllScreenings();
       
       this.availableScreenings = allScreenings
         .filter(screening => screening.movieId === this.data.movie.id)
@@ -100,7 +99,7 @@ export class TicketPurchaseDialog implements OnInit {
 
   onSeatSelected(seat: number) {
     if (this.selectedScreening && this.pseudoServer.isSeatTaken(this.selectedScreening.id, seat)) {
-      this.message = 'Ovo sedište je rezervisano od strane drugog korisnika. Molimo izaberite drugo sedište.';
+      this.message = 'Ovo mesto je rezervisano od strane drugog korisnika. Molimo izaberite drugo mesto.';
       this.generateAvailableSeats(this.selectedScreening);
       return;
     }
@@ -123,7 +122,7 @@ export class TicketPurchaseDialog implements OnInit {
     }
 
     if (this.pseudoServer.isSeatTaken(this.selectedScreening.id, this.selectedSeat)) {
-      this.message = 'Ovo sedište je rezervisano od strane drugog korisnika. Molimo izaberite drugo sedište.';
+      this.message = 'Ovo mesto je rezervisano od strane drugog korisnika. Molimo izaberite drugo mesto.';
       this.generateAvailableSeats(this.selectedScreening);
       this.selectedSeat = null;
       return;
@@ -146,6 +145,11 @@ export class TicketPurchaseDialog implements OnInit {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  trimDescription(description: string, maxLength: number): string {
+    if (description.length <= maxLength) return description;
+    return description.slice(0, maxLength) + "...";
   }
 
   getAvailableSeatCount(screening: Screening): number {

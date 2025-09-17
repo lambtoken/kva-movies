@@ -8,7 +8,9 @@
         <h3>{{ data.movie.title }}</h3>
         <p><strong>Žanr:</strong> {{ data.movie.genres.join(', ') }}</p>
         <p><strong>Režiser:</strong> {{ data.movie.director }}</p>
-        <p class="description">{{ data.movie.description }}</p>
+        <p class="description">{{ 
+          trimDescription(data.movie.description, 150) 
+        }}</p>
       </div>
     </div>
 
@@ -40,7 +42,7 @@
     </div>
 
     <div class="seat-section" *ngIf="selectedScreening">
-      <h4>Izaberite sedište:</h4>
+      <h4>Izaberite mesto:</h4>
       <div class="seat-grid">
         <div 
           *ngFor="let seat of availableSeats"
@@ -66,15 +68,15 @@
     <div class="summary" *ngIf="selectedScreening && selectedSeat">
       <h4>Pregled porudžbine:</h4>
       <div class="summary-item">
-        <span>Movie:</span>
+        <span>Film:</span>
         <span>{{ data.movie.title }}</span>
       </div>
       <div class="summary-item">
-        <span>Date & Time:</span>
+        <span>Datum i vreme:</span>
         <span>{{ formatScreeningTime(selectedScreening.screeningDate) }}</span>
       </div>
       <div class="summary-item">
-        <span>Seat:</span>
+        <span>Mesto:</span>
         <span>{{ selectedSeat }}</span>
       </div>
       <div class="summary-item total">

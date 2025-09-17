@@ -52,7 +52,7 @@ export class ReservationsPage implements OnInit {
       }
 
       this.movies = await this.pseudoServer.getAllMovies();
-      this.screenings = this.pseudoServer.generateRandomScreenings(this.movies, 20);
+      this.screenings = this.pseudoServer.getAllScreenings();
 
       this.reservations = this.user!.reservations.map(ticket => {
         const screening = this.screenings.find(s => s.id === ticket.screeningId);
@@ -80,13 +80,13 @@ export class ReservationsPage implements OnInit {
   getStatusText(status: ScreeningStatus): string {
     switch (status) {
       case ScreeningStatus.Reserved:
-        return 'Reserved';
+        return 'Rezervisan';
       case ScreeningStatus.Watched:
-        return 'Watched';
+        return 'Odgledan';
       case ScreeningStatus.Canceled:
-        return 'Canceled';
+        return 'Otkazan';
       default:
-        return 'Unknown';
+        return 'Nepoznato';
     }
   }
 

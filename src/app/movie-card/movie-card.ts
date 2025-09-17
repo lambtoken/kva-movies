@@ -36,7 +36,7 @@ export class MovieCard {
       return user.reservations.some(ticket => {
         if (!ticket.rating || ticket.status !== ScreeningStatus.Watched) return false;
         
-        const screenings = this.pseudoServer.generateRandomScreenings([this.movie], 10);
+        const screenings = this.pseudoServer.getAllScreenings();
         const screening = screenings.find(s => s.id === ticket.screeningId);
         
         return screening && screening.movieId === this.movie.id;
@@ -51,7 +51,7 @@ export class MovieCard {
     allUsers.forEach(user => {
       user.reservations.forEach(ticket => {
         if (ticket.rating && ticket.status === ScreeningStatus.Watched) {
-          const screenings = this.pseudoServer.generateRandomScreenings([this.movie], 10);
+          const screenings = this.pseudoServer.getAllScreenings();
           const screening = screenings.find(s => s.id === ticket.screeningId);
           
           if (screening && screening.movieId === this.movie.id) {
@@ -87,8 +87,8 @@ export class MovieCard {
 
         if (ticket) {
           const notificationData: NotificationData = {
-            title: 'Purchase Successful',
-            message: `Ticket purchased successfully! Seat ${result.selectedSeat} for ${this.movie.title}`,
+            title: 'Uspešna kupovina',
+            message: `Karta kupljena uspešno! Mesto ${result.selectedSeat} za ${this.movie.title}`,
             type: 'success'
           };
           this.dialog.open(NotificationDialog, {
@@ -97,8 +97,8 @@ export class MovieCard {
           });
         } else {
           const notificationData: NotificationData = {
-            title: 'Purchase Failed',
-            message: `Sorry, seat ${result.selectedSeat} is no longer available. Please select another seat.`,
+            title: 'Neuspešna kupovina',
+            message: `Mesto ${result.selectedSeat} vec zauzeto. Molim Vas pokušajte drugo mesto.`,
             type: 'error'
           };
           this.dialog.open(NotificationDialog, {

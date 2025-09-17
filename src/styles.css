@@ -13,12 +13,12 @@ Color:
 }
 html, body { height: 100%; }
 body { 
-    --blue: #ffb703;
-    --second-blue: #243495;
+    --yellow: #ffb703;
+    --blue: #243495;
     --wall: #007f5f;
     --title: #007f5f;
-    --black: #55a630;
-    --gray: #eeba0b;;
+    --green: #55a630;
+    --yellow2: #eeba0b;;
     --mat-sys-primary: var(--title);
 
     font-family: "Fira Sans", sans-serif;

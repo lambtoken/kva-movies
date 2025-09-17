@@ -52,14 +52,14 @@ div {
 
 button[type="submit"] {
   align-self: center;
-  font-size: 1.2rem;
   width: fit-content;
+  margin: 1rem 0;
 }
 
 button[type="button"] {
   margin-top: 1rem;
   align-self: flex-start;
-  color: var(--blue);
+  color: var(--yellow);
   background: none;
   border: none;
   padding: 0;
@@ -67,8 +67,8 @@ button[type="button"] {
   cursor: pointer;
 }
 
-button[type="button"]:hover {
-  text-decoration: underline;
+::ng-deep .mat-mdc-raised-button {
+  min-width: 120px !important;
 }
 
 .error-message {

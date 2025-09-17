@@ -19,17 +19,18 @@ export class MovieList implements OnInit, OnChanges {
   public screenings: Screening[] = [];
   public isUsingFallbackData = false;
 
-  constructor(private server: PseudoServer) {}
+  constructor(private server: PseudoServer) { }
 
   async ngOnInit() {
     try {
+      await this.server.setup();
       this.allMovies = await this.server.getAllMovies();
-      this.screenings = this.server.generateRandomScreenings(this.allMovies, 50);
-      
+      this.screenings = await this.server.getAllScreenings();
+
       if (this.allMovies.length > 0 && this.allMovies[0].imageUrl.includes('pinimg.com')) {
         this.isUsingFallbackData = true;
       }
-      
+
       this.applyFilters();
     } catch (error) {
       console.error('Greska prilikom ucitavanja filmova', error);
@@ -60,14 +61,14 @@ export class MovieList implements OnInit, OnChanges {
           ...movie.genres,
           ...movie.actors
         ].join(' ').toLowerCase();
-        
+
         if (!movieText.includes(searchText)) {
           return false;
         }
       }
 
       if (this.filters!.selectedGenres.length > 0) {
-        const hasMatchingGenre = this.filters!.selectedGenres.some(genre => 
+        const hasMatchingGenre = this.filters!.selectedGenres.some(genre =>
           movie.genres.includes(genre)
         );
         if (!hasMatchingGenre) {
@@ -112,7 +113,7 @@ export class MovieList implements OnInit, OnChanges {
 
       const movieScreenings = this.screenings.filter(s => s.movieId === movie.id);
       if (movieScreenings.length > 0) {
-        const hasValidPrice = movieScreenings.some(screening => 
+        const hasValidPrice = movieScreenings.some(screening =>
           screening.price >= this.filters!.priceMin && screening.price <= this.filters!.priceMax
         );
         if (!hasValidPrice) {
@@ -134,7 +135,7 @@ export class MovieList implements OnInit, OnChanges {
   private getMovieAverageRating(movieId: string): number {
     const allUsers = this.server.getAllUsers ? this.server.getAllUsers() : [];
     const ratings: number[] = [];
-    
+
     allUsers.forEach(user => {
       user.reservations.forEach(ticket => {
         if (ticket.rating && ticket.status === ScreeningStatus.Watched) {
